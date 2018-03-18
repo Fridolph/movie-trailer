@@ -1,0 +1,98 @@
+extends ./layouts/default
+
+block title
+  title 黑骑后台
+
+block content
+  include ./includes/admin-header
+
+  .admin-wrapper
+    table.table-bordered.table-hover(width='100%')
+      thead
+        tr
+          th(scope='col') 海报
+          th(scope='col') 名字
+          th(scope='col') 原始名
+          th(scope='col') 上映时间
+          th(scope='col') 评分
+          th(scope='col') 更新时间
+          th(scope='col') 豆瓣 ID
+          th(scope='col') 类型
+          th(scope='col') 标签
+          th(scope='col') 简要
+          th(scope='col') 详情
+          th(scope='col') 操作
+      tbody
+        each item in movies
+          tr
+            th(scope='row')
+              img.trigger(width='160' src=site + item.posterKey data-video=site + item.videoKey)
+            th #{item.title}
+            td #{item.rawTitle}
+            td
+              each it in item.pubdate
+                p(style='width: 200px; margin: 0;') #{moment(it.date).format('YYYY-MM-DD')} #{it.country}
+            td #{item.rate}
+            td
+              p(style='width: 90px; margin: 0;') #{moment(item.meta.createdAt).fromNow(true)} 前
+            th #{item.doubanId}
+            td
+              each type in item.movieTypes
+                span #{type}
+                br
+            td
+              each tag in item.tags
+                span #{tag}
+                br
+            td
+              p(style='padding: 5px; max-width: 800px;') #{item.summary}
+            td: a(href='/detail/' + item._id target='_blank') 链接
+            td
+              button.btn.btn-danger 删除
+  #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+    .modal-dialog.modal-lg
+      #videoModal.modal-content
+
+  include ./includes/script
+
+  script.
+    var player = null
+
+    $(document).ready(function () {
+      $('#myModal').on('hidden.bs.modal', function (e) {
+        if (player && player.pause) player.pause()
+      })
+
+      $('.trigger').click(function (e) {
+        var video = $(this).data('video')
+        var image = $(this).attr('src')
+
+        $('#myModal').modal('show')
+
+        if (!player) {
+          player = new DPlayer({
+            container: document.getElementById('videoModal'),
+            screenshot: true,
+            video: {
+              url: video,
+              pic: image,
+              thumbnails: image
+            }
+          })
+        } else {
+          if (player.video.currentSrc !== video) {
+            player.switchVideo({
+              url: video,
+              pic: image,
+              type: 'auto'
+            })
+          }
+        }
+      })
+    })
+
+
+
+
+
+

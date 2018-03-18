@@ -1,0 +1,108 @@
+extends ./layouts/default
+
+block title
+  title #{movie.title}
+
+block content
+  style(type='text/css').
+    .page-shade {
+      width: 100%;
+      height: 100%;
+      background: black;
+    }
+
+    .nav-link {
+      color: #ddd;
+    }
+
+    .nav-link:hover {
+      color: #f9f9f9;
+    }
+
+    .video-wrapper {
+      position: fixed;
+      top: 0;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      height: 100%;
+      width: calc(100% - 320px);
+    }
+
+    #videoPlayer {
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-sidebar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #1d1d1d;
+      width: 320px;
+      padding: 20px;
+      height: 100%;
+      color: #fff;
+      z-index: 2001;
+    }
+
+    .tab-content {
+      padding-top: 10px;
+    }
+
+    a.media {
+      text-decoration: none;
+      color: #d3d3d3;
+    }
+    a.media:hover {
+      color: #fff;
+    }
+    .relative-item {
+      margin-bottom: 8px;
+    }
+  include ./includes/header
+
+  .page-shade
+    .video-wrapper
+      #videoPlayer(src=site + movie.coverKey, data-video=site + movie.videoKey)
+    .video-sidebar
+      nav
+        #nav-tab.nav.nav-tabs(role="tablist")
+          a#nav-home-tab.nav-item.nav-link.active(data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true") 关于本片
+          a#nav-profile-tab.nav-item.nav-link(data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false") 同类电影
+        #nav-tabContent.tab-content
+          #nav-home.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="nav-home-tab")
+            h1 #{movie.title}
+            dl
+              dt 豆瓣评分：
+                small.badge.badge-pill.badge-info #{movie.rate} 分
+              dt 电影分类： #{movie.tags && movie.tags.join(' ')}
+              dt 更新时间： #{moment(movie.meta.createdAt).fromNow()}
+              dt 影片介绍：
+              dd
+                p #{movie.summary}
+          #nav-profile.tab-pane.fade(role="tabpanel" aria-labelledby="nav-profile-tab")
+            if relativeMovies.length > 0
+              each item in relativeMovies
+                a.media.relative-item(href='/detail/' + item._id)
+                  img.align-self-center.mr-3(width='60' src=site + item.posterKey alt=item.rawTitle)
+                  .media-body
+                    h6.mt-0 #{item.title}
+                    if item.pubdate && item.pubdate.length > 0
+                      ul.list-unstyled
+                        each it in item.pubdate
+                          li
+                            span.text-secondary #{moment(it.date).format('YYYY.MM')} (#{it.country})
+
+  include ./includes/script
+
+  if online
+    include ./_build/detail
+  else
+    include ./assets/detail
+
+
+
+
+
+

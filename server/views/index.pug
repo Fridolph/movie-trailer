@@ -1,0 +1,49 @@
+extends ./layouts/default
+
+block title
+  title 黑骑预告片场
+
+block content
+  include ./includes/header
+
+  .page-wrapper.container-fluid
+    .row
+      include ./includes/sidebar
+
+      .col-12.col-md-10.col-xl-10.py-md-3.pl-md-5.content
+        .row
+          //- each item in movies
+          //-   .col-xl-3.col-lg-4.col-md-6.col-sm-12.card-item
+          //-     .card
+          //-       .poster
+          //-         img.card-img-top(src=site + item.posterKey + '?imageMogr2/thumbnail/x1600/crop/1080x')
+          //-         span.trigger(src=site + item.videoKey, data-video=site + item.videoKey)
+          //-         svg(version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="55px" height="55px" viewBox="0 0 57 57" style="enable-background:new 0 0 57 57;" xml:space="preserve")
+          //-           style(type="text/css").
+          //-             .play{fill:none;stroke:#FFFFFF;stroke-miterlimit:10;}
+          //-             .play-inner{fill:#FFFFFF;}
+          //-           circle.play(cx="28" cy="28" r="27")
+          //-           polygon.play-inner(points="37.389,27.501 22,18.243 22,36.758 ")
+          //-       .card-body
+          //-         a(href='/detail/' + item._id, target='_blank')
+          //-           h5.card-title.text-center #{item.title}
+          //-         p.card-desc #{item.summary}
+          //-       .card-footer.d-flex.justify-content-between
+          //-         small.text-muted #{moment(item.meta.createdAt).fromNow(true)}前更新
+          //-         small.badge.badge-pill.badge-info #{item.rate} 分
+  #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+    .modal-dialog.modal-lg
+      #videoModal.modal-content
+
+  include ./includes/script
+
+  //- if online
+  //-   include ./_build/index
+  //- else
+  //-   include ./assets/index
+
+
+
+
+
+
