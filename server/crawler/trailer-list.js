@@ -1,12 +1,15 @@
-const URL = 'https://movie.douban.com/tag/#/?sort=R&range=6,10&tags='
+// 爬取 列表信息 电影概览
 const puppeteer = require('puppeteer')
+const URL = 'https://movie.douban.com/tag/#/?sort=R&range=6,10&tags='
 
 const sleep = time =>
   new Promise((resolve, reject) => {
     setTimeout(resolve, time)
   })
 ;(async () => {
-  console.log('-------------------Start visit the target page-------------------')
+  console.log(
+    '-------------------Start visit the target page-------------------'
+  )
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
     dumpio: false
@@ -55,5 +58,6 @@ const sleep = time =>
 
   browser.close()
 
-  console.log(result)
+  process.send({ result })
+  process.exit(0)
 })()
