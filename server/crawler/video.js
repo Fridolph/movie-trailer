@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer')
 
 const BASE_URL = 'https://movie.douban.com/subject/'
 // const doubanId = '26739551'
-const doubanId = '26603666'
+const doubanId = '3445906'
 const videoBase = `https://movie.douban.com/trailer/219491/`
 
 const sleep = time =>
