@@ -1,32 +1,27 @@
 const Koa = require('koa')
-const views = require('koa-views')
-const {resolve} = require('path')
-const mongoose = require('mongoose')
-const {connect, initSchemas} = require('./database/init')
-const router = require('./routes')
+const { resolve } = require('path')
+// const mongoose = require('mongoose')
+const { connect, initSchemas } = require('./database/init')
+const router = require('./routes/index')
+// const R = require('ramda')
+// const MIDDLEWARES = ['router']
 
-;(async () => {
+// 9-5 12:00
+// 实现加载中间件数据的功能
+
+async function start() {
   // 连接数据库
   await connect()
   initSchemas()
-  // require('./tasks/movie')  
-  require('./tasks/api')
-})()
+  // require('./tasks/movie')
+  // require('./tasks/api')
+  const app = new Koa()
+  
+  app.use(router)
 
-const app = new Koa()
+  app.listen(4455)
+  console.log(`server is running at localhost:4455 --- >>> 
+---------------------------------------`)
+}
 
-app
-  .use(router.routes())
-  .use(router.allowedMethods())
-
-
-app.use(views(resolve(__dirname, './views'), {
-  extension: 'pug'
-}))
-
-app.use(async (ctx, next) => {
-  await ctx.render('index', {
-    movies: []
-  })
-})
-app.listen(4455)
+start()

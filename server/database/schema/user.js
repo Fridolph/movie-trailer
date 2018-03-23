@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const Schema = mongoose.Schema
-const Mixed = Schema.Types.Mixed
+// const Mixed = Schema.Types.Mixed
 const SALT_WORK_FACTOR = 10
 const MAX_LOGIN_ATTEMPTS = 5 // 最大尝试登录次数
 const LOCK_TIME = 1 * 60 * 60 * 1000 // 1小时
