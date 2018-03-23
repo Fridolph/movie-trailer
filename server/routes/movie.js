@@ -3,7 +3,7 @@ const { getAllMovies, getRelativeMovies } = require('../service/movie')
 const { controller, get, post, put} = require('../lib/decorator')
 
 @controller('/api/v0/movies')
-class movieController {
+export class movieController {
   @get('/')
   async getMovies(ctx, next) {
     const {type, year} = ctx.query
@@ -24,8 +24,4 @@ class movieController {
       success: true
     }
   }
-}
-
-module.exports = {
-  movieController
 }

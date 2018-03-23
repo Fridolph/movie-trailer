@@ -1,4 +1,5 @@
-const Router = require('koa-router')
+// const koa = require('koa')
+const router = require('koa-router')()
 const glob = require('glob')
 const { resolve } = require('path')
 const R = require('ramda')
@@ -23,23 +24,23 @@ export class Route {
   constructor (app, routesPath) {
     this.app = app
     this.routesPath = routesPath
-    this.router = new Router()
+    this.router = router
   }
 
   init () {
-    const { app, router, routesPath } = this
+    // const { app, router, routesPath } = this
 
-    glob.sync(resolve(routesPath, './**/*.js')).forEach(require)
+    glob.sync(resolve(this.routesPath, './**/*.js')).forEach(require)
 
     R.forEach(
       ({ target, method, path, callback }) => {
         const prefix = normalizePath(target[pathPrefix])
-        router[method](prefix + path, ...callback)
+        this.router[method](prefix + path, ...callback)
       }
     )(routeMap)
 
-    app.use(router.routes())
-    app.use(router.allowedMethods())
+    this.app.use(this.router.routes())
+    this.app.use(this.router.allowedMethods())
   }
 }
 

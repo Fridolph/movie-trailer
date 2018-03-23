@@ -1,14 +1,8 @@
-const Router = require('koa-router')
-const router = Router()
+const router = require('koa-router')()
 
-router.get('/', async(ctx, next) => {
+router.get('/', async (ctx, next) => {
   ctx.body = 'hello koa2'
-  next()
-})
-
-router.get('/movie', async(ctx, next) => {
-  ctx.body = 'movie'
-  next()
+  await next()
 })
 
 module.exports = router
