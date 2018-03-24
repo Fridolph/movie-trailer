@@ -10,7 +10,7 @@ const router = require('./routes')
   await connect()
   initSchemas()
   // require('./tasks/movie')  
-  require('./tasks/api')
+  // require('./tasks/api')
 })()
 
 const app = new Koa()
@@ -29,4 +29,7 @@ app.use(async (ctx, next) => {
     movies: []
   })
 })
-app.listen(4455)
+app.listen(4455, () => {
+  console.log('server is running at localhost:4455')
+  console.log('-----------------------------------')
+})
