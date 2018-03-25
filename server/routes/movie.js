@@ -1,7 +1,7 @@
 const {get, controller} = require('../lib/decorator')
 const {getAllMovies, getMovieDetail, getRelativeMovies} = require('../service/movie')
 
-@controller('/api/movies')
+@controller('/api/v0/movies')
 export default class MovieRouter {
   @get('/')
   async getMovies(ctx, next) {
@@ -14,7 +14,7 @@ export default class MovieRouter {
     }
   }
 
-  @get('/api/detail/:id')
+  @get('/api/v0/movies/detail/:id')
   async getMovieDetail(ctx, next) {
     const {id} = ctx.params
     const movie = await getMovieDetail(id)

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import {Menu, Spin} from 'antd'
 import {Link} from 'react-router-dom'
 import navRoutes from '../nav'
+import {request} from '../lib'
+import {Menu, Spin, Icon} from 'antd'
 
 const getMenuContent = ({path, name}) => (
   <a href={path ? path : '/'} style={{color: '#fff2e8'}}>
@@ -10,19 +11,6 @@ const getMenuContent = ({path, name}) => (
 )
 
 export default class LayoutDefault extends Component {
-  matchRouteName = this.props.match 
-    ? navRoutes.find(e => e.name === this.props.match.params.type) 
-      ? navRoutes.find(e => e.name === this.props.match.params.type).name
-      : '全部'
-    : navRoutes[0].name
-  
-  toggleLoading = (stats = false, tip = '再等一下下嘛 ~') => {
-    this.setState({
-      tip,
-      loading: stats
-    })
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -31,35 +19,50 @@ export default class LayoutDefault extends Component {
     }
   }
 
+  matchRouteName = this.props.match 
+    ? navRoutes.find(e => e.name === this.props.match.params.type) 
+      ? navRoutes.find(e => e.name === this.props.match.params.type).name
+      : '全部'
+    : navRoutes[0].name
+  
+  toggleLoading = (status = false, tip = '再等一下下嘛 ~') => {
+    this.setState({
+      tip,
+      loading: status
+    })
+  }
+
   render() {
-    const Item = Menu.Item
     const {children} = this.props
     const {loading, tip} = this.state
-    const styles = {
-      marginLeft: 24,
-      marginRight: 30,
-      fontSize: 18,
-      textAlign: 'center',
-      color: '#fff !important',
-      float: 'left'
-    }
-
+  
     return (
-      <div className="flex-column" style={{width: '100%', height: '100%'}}>
+      <div className="flex-column">
         <Menu 
+          className="menu-wrapper"
           defaultSelectedKeys={[this.matchRouteName]}
           mode="horizontal" 
           style={{fontSize: 13.5, backgroundColor: '#333'}}>
-          <Item style={styles}>
-            <a href="/" className="hover-scale logo-text" style={{color: '#fff2e8'}}>电影预告片网站</a>
-          </Item>
+          <Menu.Item className="first-item-logo">
+            <a href="/">
+              <i className="avatar-me"></i>
+              <span>霪霖笙箫</span>
+            </a>
+          </Menu.Item>
+          {
+            navRoutes.map((v, i) => (
+              <Menu.Item className="menu-item" key={v.name}>
+                {getMenuContent({...v})}
+              </Menu.Item>
+            ))
+          }
         </Menu>
         <Spin
           spinning={loading}
           tip={tip}
-          wrapperClassName="content-spin full"
+          wrapperClassName="content-spin"
         >
-          {children}
+          {children} 
         </Spin>
       </div>
     )
@@ -70,6 +73,6 @@ export default class LayoutDefault extends Component {
   }
 
   componentWillUnmount() {
-    window.__LOADING__ = this.toggleLoading
+    window.__LOADING__ = null
   }
 }

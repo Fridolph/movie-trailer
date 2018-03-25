@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import AC from './components/async_load'
 
 export default [
   {
