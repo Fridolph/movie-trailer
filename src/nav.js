@@ -10,6 +10,10 @@ export default [
     path: `/list/${encodeURIComponent('科幻')}`
   },
   {
+    name: '惊悚',
+    path: `/list/${encodeURIComponent('惊悚')}`
+  },
+  {
     name: '冒险',
     path: `/list/${encodeURIComponent('冒险')}`
   },
@@ -22,8 +26,24 @@ export default [
     path: `/list/${encodeURIComponent('悬疑')}`
   },
   {
-    name: '惊悚',
-    path: `/list/${encodeURIComponent('惊悚')}`
+    name: '剧情',
+    path: `/list/${encodeURIComponent('剧情')}`
+  },
+  {
+    name: '犯罪',
+    path: `/list/${encodeURIComponent('犯罪')}`
+  },
+  {
+    name: '灾难',
+    path: `/list/${encodeURIComponent('灾难')}`
+  },
+  {
+    name: '恐怖',
+    path: `/list/${encodeURIComponent('恐怖')}`
+  },
+  {
+    name: '战争',
+    path: `/list/${encodeURIComponent('战争')}`
   },
   {
     name: '喜剧',
@@ -42,3 +62,4 @@ export default [
     path: `/list/${encodeURIComponent('励志')}`
   }
 ]
+

@@ -1,16 +1,15 @@
 import axios from 'axios'
-import {message} from 'antd'
+import { message } from 'antd'
 
-const defaultAxiosConfig = {
-  timeout: 3000
+const defaultAxiosConf = {
+  timeout: 5000
 }
 
 const _request = (params = {}, fn = () => {}) => {
-  return axios({ ...defaultAxiosConfig, ...params })
+  return axios({ ...defaultAxiosConf, ...params })
     .then(res => {
-      const { success, data, err, code } = res.data
-
-      if (code === 401) {
+      const { success, data, errMsg, errCode } = res.data
+      if (errCode === 401) {
         window.location.href = '/'
         return
       }
@@ -18,23 +17,21 @@ const _request = (params = {}, fn = () => {}) => {
         fn(false)
         return data
       }
-      throw err
+      throw errMsg
     })
     .catch(err => {
       fn(false)
-      message.err(String(err || '网络错误'))
+      message.error(String(err || '网络错误'))
+      console.error(err)
+      throw err
     })
 }
 
 export default (param) => {
-  const type = typeof param
-
-  if (type === 'function') {
+  const typeRes = typeof param
+  if (typeRes === 'function') {
     param(true)
-    return obj => _request(obj, param)
+    return (obj) => _request(obj, param)
   }
-
-  if (type === 'object' && type !== null) {
-    return _reuqest(param)
-  }
+  if (typeRes === 'object' && typeRes !== null) return _request(param)
 }

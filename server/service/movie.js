@@ -1,15 +1,13 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
+
 const Movie = mongoose.model('Movie')
 
 export const getAllMovies = async (type, year) => {
   let query = {}
 
   if (type) {
-    query.movieTypes = {
-      $in: [type]
-    }
+    query.movieTypes = {$in: [type]}
   }
-
   if (year) {
     query.year = year
   }
@@ -19,16 +17,16 @@ export const getAllMovies = async (type, year) => {
   return movies
 }
 
-export const getMovieDetail = async id => {
-  const movie = await Movie.findOne({ _id: id })
-  return movie
+export const getRelativeMovies = async (movie) => {
+  const relativeMovies = await Movie.find({
+    movieTypes: {$in: movie.movieTypes}
+  })
+
+  return relativeMovies
 }
 
-export const getRelativeMovies = async movie => {
-  const movies = await Movie.find({
-    movieTypes: {
-      $in: movie.movieTypes
-    }
-  })
-  return movies
+export const getSingleMovie = async (id) => {
+  const movie = await Movie.findOne({_id: id})
+
+  return movie
 }

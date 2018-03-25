@@ -1,50 +1,43 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-// Mixed可存任何类型的数据，适合数据结构变化频繁的场景
-const { Mixed, ObjectId } = Schema.Types
+const Mixed = Schema.Types.Mixed
 
-const movieSchema = new Schema({
-  // 描述model所需字段
-  doubanId: { type: String, required: true, unique: true },
-
-  category: [
-    {
-      type: ObjectId,
-      ref: 'Category'
-    }
-  ],
-
+const MovieSchema = new mongoose.Schema({
+  doubanId: String,
   rate: Number,
   title: String,
   summary: String,
   video: String,
-  poster: String,
   cover: String,
-
+  poster: String,
   videoKey: String,
-  posterKey: String,
   coverKey: String,
-
+  posterKey: String,
   rawTitle: String,
   movieTypes: [String],
   pubdate: Mixed,
-  year: Number,
-
-  tags: Array,
-
+  tags: Mixed,
   meta: {
-    createdAt: { type: Date, default: Date.now() },
-    updatedAt: { type: Date, default: Date.now() }
+    createdAt: {
+      type: Date,
+      default: Date.now()
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now()
+    }
   }
 })
 
-movieSchema.pre('save', function(next) {
+MovieSchema.pre('save', function (next) {
   if (this.isNew) {
-    this.meta.createAt = this.meta.updateAt = Date.now()
+    this.meta.createdAt = this.meta.updatedAt = Date.now()
   } else {
-    this.meta.updateAt = Date.now()
+    this.meta.updatedAt = Date.now()
   }
+
   next()
 })
 
-mongoose.model('Movie', movieSchema)
+mongoose.model('Movie', MovieSchema)
+

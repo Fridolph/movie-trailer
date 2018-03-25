@@ -1,11 +1,17 @@
-const {get, controller} = require('../lib/decorator')
-const {getAllMovies, getMovieDetail, getRelativeMovies} = require('../service/movie')
+import mongoose from 'mongoose'
+import {
+  Controller,
+  Get,
+  Required,
+} from '../decorator/router'
+import { getAllMovies, getSingleMovie, getRelativeMovies } from '../service/movie'
 
-@controller('/api/v0/movies')
+@Controller('/movies')
 export default class MovieRouter {
-  @get('/')
-  async getMovies(ctx, next) {
-    const {type, year} = ctx.query
+  @Get('/all')
+  async getMovieList (ctx, next) {
+    const type = ctx.query.type
+    const year = ctx.query.year
     const movies = await getAllMovies(type, year)
 
     ctx.body = {
@@ -14,12 +20,12 @@ export default class MovieRouter {
     }
   }
 
-  @get('/api/v0/movies/detail/:id')
-  async getMovieDetail(ctx, next) {
-    const {id} = ctx.params
-    const movie = await getMovieDetail(id)
+  @Get('/detail/:id')
+  async getMovieDetail (ctx, next) {
+    const id = ctx.params.id
+    const movie = await getSingleMovie(id)
     const relativeMovies = await getRelativeMovies(movie)
-
+   
     ctx.body = {
       data: {
         movie,
@@ -29,11 +35,3 @@ export default class MovieRouter {
     }
   }
 }
-
-// router.get('/movies', async (ctx, next) => {   const Movie =
-// mongoose.model('Movie')   const movies = await Movie.find({}).sort({
-// 'meta.createdAt': -1   })   ctx.body = {     movies   } })
-// router.get('/movies/:id', async (ctx, next) => {   const Movie =
-// mongoose.model('Movie')   const id = ctx.params.id   const movie = await
-// Movie.findOne({ _id: id })   ctx.body = {     movie   } }) module.exports =
-// router
