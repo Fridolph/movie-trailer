@@ -42,7 +42,7 @@ const connect = () => {
 
 }
 
-const initSchemas = () => {
+const initSchemas = async () => {
   glob.sync(resolve(__dirname, './schema/', '**/*.js')).forEach(require)
 }
 

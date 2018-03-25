@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const views = require('koa-views')
 const {join} = require('path')
 const {connect, initSchemas} = require('./database/init')
-// const router = require('./routes')
 const R = require('ramda')
 const MIDDLEWARES = ['router', 'parcel']
 
@@ -23,14 +22,16 @@ const useMiddlewares = app => {
 ;(async () => {
   // 连接数据库
   await connect()
-  initSchemas()
+  await initSchemas()
   // require('./tasks/movie')  
   // require('./tasks/api')
-  const app = new Koa()
-  await useMiddlewares(app)
+  require('./tasks/qiniu')
 
-  app.listen(4455, () => {
-    console.log('server is running at localhost:4455')
-    console.log('-----------------------------------')
-  })
+  // const app = new Koa()
+  // await useMiddlewares(app)
+
+  // app.listen(4455, () => {
+  //   console.log('server is running at localhost:4455')
+  //   console.log('-----------------------------------')
+  // })
 })()

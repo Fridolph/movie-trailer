@@ -10,6 +10,7 @@ const qiniu = require('qiniu')
 const nanoid = require('nanoid')
 const config = require('../config')
 const mongoose = require('mongoose')
+const Movie = mongoose.model('Movie')
 
 const {bucket} = config.qiniu
 const mac = new qiniu
@@ -36,24 +37,23 @@ const uploadToQiniu = async(url, key) => {
     })
   })
 };
-(async() => {
-  const Movie = mongoose.model('Movie')
-  // let movies = [
-  //   {
-  //     video: 'http://vt1.doubanio.com/201803202127/0e81598d3ca2e7e4b226e6a35ba8bf2c/view/movie' +
-  //       '/M/302270967.mp4',
-  //     doubanId: '3445906',
-  //     cover: 'https://img3.doubanio.com/img/trailer/medium/2514914002.jpg?1519792621',
-  //     poster: 'https://img1.doubanio.com/view/photo/l_ratio_poster/public/p2512717509.jpg'
-  //   }
-  // ]
-  let movies = await Movie.find({
-    $or: [
-      {videoKey: {$exists: false}},
-      {videoKey: null},
-      {videoKey: ''}
-    ]
-  }).exec()
+(async () => {
+  let movies = [
+    {
+      video: 'http://vt1.doubanio.com/201803202127/0e81598d3ca2e7e4b226e6a35ba8bf2c/view/movie' +
+        '/M/302270967.mp4',
+      doubanId: '3445906',
+      cover: 'https://img3.doubanio.com/img/trailer/medium/2514914002.jpg?1519792621',
+      poster: 'https://img1.doubanio.com/view/photo/l_ratio_poster/public/p2512717509.jpg'
+    }
+  ]
+  // let movies = await Movie.find({
+  //   $or: [
+  //     {videoKey: {$exists: false}},
+  //     {videoKey: null},
+  //     {videoKey: ''}
+  //   ]
+  // })
 
   movies.map(async movie => {
     if (movie.video && !movie.key) {
